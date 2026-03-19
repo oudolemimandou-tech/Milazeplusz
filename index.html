@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milazeplus</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --accent: #e8a020;
+    --accent2: #f0c040;
+    --green: #2d7a4f;
+    --green-light: #e6f4ed;
+    --white: #ffffff;
+    --light: #f8f6f0;
+    --gray: #6b7280;
+    --dark: #111827;
+    --border: #e5e7eb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--dark);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: var(--white);
+    padding: .55rem 1.4rem; border-radius: 50px;
+    text-decoration: none; font-weight: 600; font-size: .85rem;
+    transition: background .2s, transform .15s;
+  }
+  .nav-cta:hover { background: #c8880e; transform: translateY(-1px); }
+
+  /* HAMBURGER */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--dark); border-radius: 2px; transition: all .3s; }
+
+  /* ── HERO ── */
+  #accueil {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29 0%, #1a1a2e 40%, #16213e 70%, #0f3460 100%);
+    display: flex; align-items: center;
+    padding: 100px 5% 60px;
+    position: relative; overflow: hidden;
+  }
+  #accueil::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(232,160,32,.18) 0%, transparent 60%);
+  }
+  .hero-inner {
+    display: flex; align-items: center;
+    gap: 4rem; max-width: 1200px; margin: 0 auto; width: 100%;
+  }
+  .hero-text { flex: 1; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(232,160,32,.2);
+    border: 1px solid rgba(232,160,32,.5);
+    color: var(--accent2);
+    padding: .35rem 1rem; border-radius: 50px;
+    font-size: .8rem; font-weight: 600; letter-spacing: .05em;
+    margin-bottom: 1.5rem; text-transform: uppercase;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900; color: var(--white);
+    line-height: 1.15; margin-bottom: 1.5rem;
+  }
+  .hero-title .highlight { color: var(--accent2); }
+  .hero-desc {
+    font-size: 1.05rem; color: rgba(255,255,255,.75);
+    line-height: 1.75; max-width: 540px; margin-bottom: 2.5rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: var(--white);
+    padding: .85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 700; font-size: .95rem;
+    transition: all .2s; display: inline-block;
+  }
+  .btn-primary:hover { background: #c8880e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,160,32,.4); }
+  .btn-secondary {
+    background: transparent; color: var(--white);
+    border: 2px solid rgba(255,255,255,.4);
+    padding: .85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 600; font-size: .95rem;
+    transition: all .2s; display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+  .hero-img-wrap { flex: 0 0 380px; display: flex; justify-content: center; }
+  .hero-img-wrap img { max-width: 340px; width: 100%; filter: drop-shadow(0 20px 60px rgba(232,160,32,.3)); animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+
+  /* ── SECTIONS ── */
+  section { padding: 90px 5%; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-tag {
+    font-size: .8rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800; line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    color: var(--gray); font-size: 1rem;
+    line-height: 1.7; max-width: 640px;
+  }
+
+  /* ── CIBLES ── */
+  #cibles { background: var(--light); }
+  .cibles-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 2rem; margin-top: 3rem;
+  }
+  .cible-card {
+    background: var(--white); border-radius: 16px;
+    padding: 2rem; border: 1px solid var(--border);
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .cible-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--accent);
+    transform: scaleX(0); transition: transform .3s;
+  }
+  .cible-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.1); }
+  .cible-card:hover::before { transform: scaleX(1); }
+  .cible-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .cible-card h3 { font-weight: 700; font-size: 1.1rem; margin-bottom: .75rem; }
+  .cible-card p { color: var(--gray); font-size: .9rem; line-height: 1.65; }
+  .cibles-btns { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+
+  /* ── DÉFI ── */
+  #defi {
+    background: linear-gradient(135deg, var(--primary) 0%, #16213e 100%);
+    color: var(--white);
+  }
+  #defi .section-title { color: var(--white); }
+  .defi-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+  .defi-list { list-style: none; }
+  .defi-list li {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: .95rem; color: rgba(255,255,255,.85); line-height: 1.6;
+  }
+  .defi-list li::before {
+    content: '⚠'; font-size: 1.1rem; flex-shrink: 0; margin-top: .1rem;
+  }
+  .defi-result {
+    background: rgba(232,160,32,.15);
+    border: 1px solid rgba(232,160,32,.35);
+    border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;
+    color: var(--accent2);
+  }
+  .defi-result strong { display: block; margin-bottom: .5rem; font-size: 1rem; }
+  .defi-result p { font-size: .9rem; opacity: .9; }
+  .defi-visual {
+    background: rgba(255,255,255,.06);
+    border-radius: 20px; padding: 2.5rem;
+    border: 1px solid rgba(255,255,255,.12);
+  }
+  .defi-visual h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1.5rem; color: var(--accent2); }
+  .stat-item { margin-bottom: 1.5rem; }
+  .stat-label { font-size: .85rem; color: rgba(255,255,255,.65); margin-bottom: .5rem; }
+  .stat-bar { height: 8px; background: rgba(255,255,255,.1); border-radius: 50px; overflow: hidden; }
+  .stat-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1.5s ease; }
+
+  /* ── SOLUTION ── */
+  #solution { background: var(--white); }
+  .solution-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; margin-top: 3rem; }
+  .sol-card {
+    background: var(--light); border-radius: 16px;
+    padding: 2rem; border: 1px solid var(--border);
+    transition: all .25s;
+  }
+  .sol-card:hover { background: var(--white); box-shadow: 0 8px 30px rgba(0,0,0,.08); }
+  .sol-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 900; color: var(--accent);
+    opacity: .3; line-height: 1; margin-bottom: .75rem;
+  }
+  .sol-card h3 { font-weight: 700; font-size: 1.05rem; margin-bottom: .6rem; }
+  .sol-card p { color: var(--gray); font-size: .9rem; line-height: 1.65; }
+  .sol-link { display: inline-block; margin-top: .75rem; color: var(--accent); font-weight: 600; font-size: .85rem; text-decoration: none; }
+  .sol-link:hover { text-decoration: underline; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--light); }
+  .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
+  .serv-card {
+    background: var(--white); border-radius: 20px; padding: 2.5rem;
+    border: 1px solid var(--border); transition: all .3s;
+  }
+  .serv-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,.1); }
+  .serv-icon {
+    width: 56px; height: 56px; border-radius: 14px;
+    background: var(--green-light); display: flex; align-items: center;
+    justify-content: center; font-size: 1.6rem; margin-bottom: 1.5rem;
+  }
+  .serv-card h3 { font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; }
+  .serv-items { list-style: none; }
+  .serv-items li {
+    padding: .4rem 0; font-size: .9rem; color: var(--gray);
+    border-bottom: 1px dashed var(--border); display: flex; align-items: center; gap: .5rem;
+  }
+  .serv-items li::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+  /* ── OFFRES ── */
+  #offres { background: var(--white); }
+  .offres-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
+  .offre-card {
+    border-radius: 20px; padding: 2.5rem;
+    border: 2px solid var(--border);
+    transition: all .3s; position: relative;
+  }
+  .offre-card.featured {
+    background: linear-gradient(135deg, var(--primary), #16213e);
+    border-color: var(--accent); color: var(--white);
+  }
+  .offre-card.featured .offre-price { color: var(--accent2); }
+  .offre-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: var(--white);
+    padding: .3rem 1.2rem; border-radius: 50px;
+    font-size: .75rem; font-weight: 700; white-space: nowrap;
+  }
+  .offre-card:not(.featured):hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,.1); border-color: var(--accent); }
+  .offre-label { font-size: .8rem; font-weight: 700; color: var(--accent); margin-bottom: .3rem; text-transform: uppercase; }
+  .offre-card.featured .offre-label { color: var(--accent2); }
+  .offre-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 800; margin-bottom: .3rem; }
+  .offre-subtitle { font-size: .85rem; color: var(--gray); margin-bottom: 1.5rem; font-style: italic; }
+  .offre-card.featured .offre-subtitle { color: rgba(255,255,255,.6); }
+  .offre-features { list-style: none; margin-bottom: 1.5rem; }
+  .offre-features li {
+    padding: .5rem 0; font-size: .9rem; display: flex; gap: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .offre-card.featured .offre-features li { border-color: rgba(255,255,255,.12); color: rgba(255,255,255,.85); }
+  .offre-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+  .offre-card.featured .offre-features li::before { color: var(--accent2); }
+  .offre-price { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 800; color: var(--primary); margin: 1.2rem 0; }
+  .offre-cta {
+    display: block; text-align: center; padding: .85rem;
+    border-radius: 50px; text-decoration: none; font-weight: 700; font-size: .9rem;
+    transition: all .2s;
+  }
+  .offre-cta.light { background: var(--accent); color: var(--white); }
+  .offre-cta.light:hover { background: #c8880e; }
+  .offre-cta.dark { background: var(--white); color: var(--primary); }
+  .offre-cta.dark:hover { background: var(--accent2); }
+  .offres-note {
+    text-align: center; margin-top: 2.5rem; color: var(--gray);
+    font-size: .9rem; background: var(--light); padding: 1.5rem; border-radius: 12px;
+  }
+  .offres-note strong { color: var(--dark); }
+
+  /* ── PROCESSUS ── */
+  #processus { background: var(--light); }
+  .steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 3rem; }
+  .step-card {
+    background: var(--white); border-radius: 16px; padding: 2rem;
+    border: 1px solid var(--border); text-align: center; transition: all .3s;
+    position: relative;
+  }
+  .step-card::after {
+    content: '→';
+    position: absolute; right: -1rem; top: 50%; transform: translateY(-50%);
+    font-size: 1.4rem; color: var(--accent); font-weight: 700;
+  }
+  .step-card:last-child::after { display: none; }
+  .step-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--accent); color: var(--white);
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+  .step-card h3 { font-weight: 700; font-size: 1rem; margin-bottom: .6rem; }
+  .step-card p { color: var(--gray); font-size: .85rem; line-height: 1.6; }
+
+  /* ── RÉSULTATS ── */
+  #resultats {
+    background: linear-gradient(135deg, var(--green) 0%, #1f5c38 100%);
+    color: var(--white);
+  }
+  #resultats .section-title { color: var(--white); }
+  #resultats .section-sub { color: rgba(255,255,255,.75); }
+  .resultats-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .stats-trio { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .stat-block {
+    background: rgba(255,255,255,.12); border-radius: 16px; padding: 1.8rem; text-align: center;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .stat-big { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--accent2); }
+  .stat-desc { font-size: .8rem; color: rgba(255,255,255,.7); margin-top: .3rem; line-height: 1.4; }
+  .resultats-img { border-radius: 20px; overflow: hidden; }
+  .resultats-img img { width: 100%; display: block; }
+
+  /* ── POURQUOI ── */
+  #pourquoi { background: var(--white); }
+  .pourquoi-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; margin-top: 3rem; }
+  .pourquoi-card {
+    background: var(--light); border-radius: 16px; padding: 2rem;
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    border: 1px solid var(--border); transition: all .25s;
+  }
+  .pourquoi-card:hover { background: var(--white); box-shadow: 0 8px 24px rgba(0,0,0,.07); }
+  .pq-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: var(--white);
+    font-weight: 800; font-size: .95rem; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .pourquoi-card h3 { font-weight: 700; font-size: 1rem; margin-bottom: .4rem; }
+  .pourquoi-card p { color: var(--gray); font-size: .9rem; line-height: 1.6; }
+  .quote-block {
+    background: var(--primary); color: var(--white);
+    border-radius: 20px; padding: 3rem; text-align: center;
+    margin-top: 2.5rem; position: relative; overflow: hidden;
+  }
+  .quote-block::before {
+    content: '"'; font-family: 'Playfair Display', serif;
+    font-size: 12rem; font-weight: 900; color: rgba(232,160,32,.15);
+    position: absolute; top: -2rem; left: 1.5rem; line-height: 1;
+  }
+  .quote-block blockquote { font-style: italic; font-size: 1.1rem; line-height: 1.75; color: rgba(255,255,255,.9); max-width: 680px; margin: 0 auto 1.5rem; position: relative; z-index: 1; }
+  .quote-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 1; }
+
+  /* ── PARTENAIRES ── */
+  #partenaires { background: var(--light); }
+  .partners-strip {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    justify-content: center; margin-top: 2.5rem;
+  }
+  .partner-logo {
+    width: 120px; height: 80px; background: var(--white);
+    border-radius: 12px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; transition: all .25s;
+  }
+  .partner-logo:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.1); }
+  .partner-logo img { max-width: 90px; max-height: 60px; object-fit: contain; }
+  .partner-cta { text-align: center; margin-top: 2.5rem; }
+  .partner-cta p { color: var(--gray); font-size: .95rem; margin-bottom: 1rem; }
+  .partner-cta strong { color: var(--dark); }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: linear-gradient(135deg, #0f0c29, #1a1a2e, #0f3460);
+    color: var(--white);
+  }
+  #contact .section-title { color: var(--white); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-info-list { list-style: none; margin: 2rem 0; }
+  .contact-info-list li {
+    display: flex; align-items: center; gap: .8rem;
+    padding: .75rem 0; border-bottom: 1px solid rgba(255,255,255,.1);
+    font-size: .95rem; color: rgba(255,255,255,.8);
+  }
+  .contact-info-list li .icon { font-size: 1.2rem; }
+  .contact-btns { display: flex; flex-direction: column; gap: 1rem; }
+  .btn-whatsapp {
+    display: flex; align-items: center; gap: .75rem;
+    background: #25d366; color: var(--white);
+    padding: 1rem 1.8rem; border-radius: 12px;
+    text-decoration: none; font-weight: 700; font-size: .95rem;
+    transition: all .2s; border: none; cursor: pointer;
+  }
+  .btn-whatsapp:hover { background: #1eb85a; transform: translateY(-2px); }
+  .btn-diagnostic {
+    display: flex; align-items: center; gap: .75rem;
+    background: var(--accent); color: var(--white);
+    padding: 1rem 1.8rem; border-radius: 12px;
+    text-decoration: none; font-weight: 700; font-size: .95rem;
+    transition: all .2s;
+  }
+  .btn-diagnostic:hover { background: #c8880e; transform: translateY(-2px); }
+  .contact-contact-info { margin-top: 1.5rem; }
+  .contact-contact-info p { font-size: .9rem; color: rgba(255,255,255,.65); margin-bottom: .4rem; }
+  .contact-contact-info a { color: var(--accent2); text-decoration: none; }
+  .contact-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-img-grid img { width: 100%; border-radius: 12px; object-fit: cover; height: 160px; }
+
+  /* ── HERO LOGO in contact ── */
+  .contact-logo {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .contact-logo img { max-width: 80px; filter: brightness(10); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,.5);
+    text-align: center; padding: 2rem 5%;
+    font-size: .85rem; line-height: 1.7;
+  }
+  footer strong { color: rgba(255,255,255,.8); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero-inner { flex-direction: column; text-align: center; }
+    .hero-img-wrap { flex: none; }
+    .hero-btns { justify-content: center; }
+    .cibles-grid, .services-grid, .offres-grid, .steps-grid { grid-template-columns: 1fr; }
+    .step-card::after { display: none; }
+    .solution-grid, .pourquoi-grid, .defi-content, .resultats-inner, .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .stats-trio { grid-template-columns: repeat(3,1fr); }
+  }
+  @media (max-width: 540px) {
+    .stats-trio { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2rem; }
+    .offres-grid { grid-template-columns: 1fr; }
+  }
+
+  /* mobile nav */
+  .mobile-menu {
+    display: none; flex-direction: column; gap: 0;
+    position: fixed; top: 68px; left: 0; right: 0;
+    background: var(--white); border-top: 1px solid var(--border);
+    z-index: 999; padding: 1rem 5%;
+    box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none; color: var(--dark); font-weight: 500;
+    padding: .85rem 0; border-bottom: 1px solid var(--border); font-size: .95rem;
+  }
+  .mobile-menu a:last-child { border: none; }
+  .mobile-menu a.cta { color: var(--accent); font-weight: 700; }
+
+  /* Animate on scroll */
+  .aos { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+  .aos.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#accueil" class="nav-logo">MiLaZé<span>+</span></a>
+  <ul class="nav-links">
+    <li><a href="#cibles">À propos</a></li>
+    <li><a href="#services">Nos services</a></li>
+    <li><a href="#offres">Nos offres</a></li>
+    <li><a href="mailto:milazeplus@gmail.com">Contactez nous</a></li>
+  </ul>
+  <a href="https://form.typeform.com/to/PV5RSxdH" target="_blank" class="nav-cta">S'inscrire</a>
+  <div class="hamburger" onclick="toggleMenu()" id="ham">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#cibles" onclick="toggleMenu()">À propos</a>
+  <a href="#services" onclick="toggleMenu()">Nos services</a>
+  <a href="#offres" onclick="toggleMenu()">Nos offres</a>
+  <a href="mailto:milazeplus@gmail.com">Contactez nous</a>
+  <a href="https://form.typeform.com/to/PV5RSxdH" target="_blank" class="cta">S'inscrire →</a>
+</div>
+
+<!-- HERO -->
+<section id="accueil">
+  <div class="hero-inner">
+    <div class="hero-text aos">
+      <span class="hero-badge">Marketing · Communication · Gestion de projet</span>
+      <h1 class="hero-title">
+        Le marketing, la communication et la gestion de projet accessibles aux&nbsp;<span class="highlight">TPME</span>
+      </h1>
+      <p class="hero-desc">
+        <strong style="color:#fff">MiLaZé+</strong> rend le marketing professionnel accessible aux petites entreprises togolaises. Développez votre <strong style="color:#f0c040">visibilité</strong>, structurez votre <strong style="color:#f0c040">communication</strong> et accélérez votre <strong style="color:#f0c040">croissance</strong> avec des solutions adaptées à votre budget et à vos ambitions.
+      </p>
+      <div class="hero-btns">
+        <a href="#offres" class="btn-primary">Découvrir nos offres</a>
+        <a href="#contact" class="btn-secondary">Faire un Diagnostic</a>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/1ac199dd05d843c5a32a86f8e55eb18e/original/3-removebg-preview.png" alt="MiLaZé+ illustration">
+    </div>
+  </div>
+</section>
+
+<!-- CIBLES -->
+<section id="cibles">
+  <div class="section-inner">
+    <p class="section-tag aos">LES TPME CIBLE</p>
+    <h2 class="section-title aos">MiLaZé+ accompagne les TPME qui sont dans :</h2>
+    <div class="cibles-grid">
+      <div class="cible-card aos">
+        <div class="cible-icon">🌾</div>
+        <h3>En agriculture et agro-industrie</h3>
+        <p>Les petites entreprises agricoles et de transformation (soja, manioc, maïs, etc.)</p>
+        <a href="#contact" style="display:inline-block;margin-top:1rem;color:var(--accent);font-weight:600;font-size:.85rem;text-decoration:none;">En savoir plus →</a>
+      </div>
+      <div class="cible-card aos">
+        <div class="cible-icon">🛒</div>
+        <h3>Commerce et service (tertiaire)</h3>
+        <p>Boutiques de distribution, e-commerce, services clients, services B2B, les services financiers, la logistique, les transports et autres services de proximité.</p>
+        <a href="#contact" style="display:inline-block;margin-top:1rem;color:var(--accent);font-weight:600;font-size:.85rem;text-decoration:none;">En savoir plus →</a>
+      </div>
+      <div class="cible-card aos">
+        <div class="cible-icon">🏭</div>
+        <h3>Industrie et transformation</h3>
+        <p>Des industries comme l'agroalimentaire, le textile, les matériaux de construction et les produits métallurgiques sont en croissance.</p>
+        <a href="#contact" style="display:inline-block;margin-top:1rem;color:var(--accent);font-weight:600;font-size:.85rem;text-decoration:none;">En savoir plus →</a>
+      </div>
+    </div>
+    <div class="cibles-btns">
+      <a href="#offres" class="btn-primary">Découvrez nos offres</a>
+      <a href="#contact" class="btn-secondary" style="background:transparent;color:var(--dark);border:2px solid var(--border);padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:600;">Contactez-nous</a>
+    </div>
+  </div>
+</section>
+
+<!-- DÉFI -->
+<section id="defi">
+  <div class="section-inner">
+    <p class="section-tag" style="color:var(--accent2)">Le défi</p>
+    <h2 class="section-title">Les TPME togolaises face aux défis du marketing</h2>
+    <div class="defi-content">
+      <div>
+        <p style="color:rgba(255,255,255,.75);margin-bottom:1.5rem">De nombreuses TPME (<strong style="color:#fff">Très Petites et Moyennes Entreprises</strong>), quel que soit leur secteur ou leur niveau de maturité, rencontrent des difficultés majeures dans leur développement :</p>
+        <ul class="defi-list">
+          <li>Absence de stratégie marketing structurée</li>
+          <li>Communication irrégulière ou inefficace</li>
+          <li>Manque d'organisation et de gestion de projet</li>
+          <li>Difficulté à identifier et créer des opportunités d'affaires</li>
+          <li>Faible accès à des outils et accompagnements adaptés à leur réalité</li>
+        </ul>
+        <div class="defi-result">
+          <strong>⚡ Résultat :</strong>
+          <p>Stagnation, perte d'opportunités et croissance limitée malgré le potentiel existant.</p>
+        </div>
+        <a href="#solution" class="btn-primary" style="display:inline-block;margin-top:1.5rem;">Découvrir nos solutions</a>
+      </div>
+      <div class="defi-visual">
+        <h3>Taux de difficultés observées</h3>
+        <div class="stat-item">
+          <div class="stat-label">Manque de stratégie marketing</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:0" data-w="85%"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Communication inefficace</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:0" data-w="78%"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Gestion de projet insuffisante</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:0" data-w="70%"></div></div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Faible accès aux outils</div>
+          <div class="stat-bar"><div class="stat-fill" style="width:0" data-w="90%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="section-inner">
+    <p class="section-tag">Notre solution</p>
+    <h2 class="section-title">MiLaZé+ : Un seul partenaire.<br>Plusieurs leviers de croissance.</h2>
+    <div class="solution-grid">
+      <div class="sol-card aos">
+        <div class="sol-num">01</div>
+        <h3>Diagnostic personnalisé</h3>
+        <p>Analyse approfondie de vos besoins et de votre positionnement actuel pour établir une stratégie sur mesure.</p>
+        <a href="#contact" class="sol-link">En savoir plus sur le diagnostic →</a>
+      </div>
+      <div class="sol-card aos">
+        <div class="sol-num">02</div>
+        <h3>Solutions évolutives</h3>
+        <p>Des offres qui grandissent avec vous, du lancement à la maturité de votre entreprise.</p>
+        <a href="#offres" class="sol-link">Découvrir nos solutions →</a>
+      </div>
+      <div class="sol-card aos">
+        <div class="sol-num">03</div>
+        <h3>Mise en œuvre opérationnelle</h3>
+        <p>Application de la solution régulièrement avec des processus d'évaluation et d'amélioration.</p>
+        <a href="#contact" class="sol-link">Voir l'accompagnement →</a>
+      </div>
+      <div class="sol-card aos">
+        <div class="sol-num">04</div>
+        <h3>Accompagnement continu</h3>
+        <p>Un suivi régulier pour ajuster votre stratégie et maximiser vos résultats mois après mois.</p>
+        <a href="#offres" class="sol-link">Découvrez nos offres →</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap">
+      <a href="#offres" class="btn-primary">Découvrez nos offres</a>
+      <a href="#contact" class="btn-secondary" style="background:transparent;color:var(--dark);border:2px solid var(--border);padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:600;">Contactez-nous</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <p class="section-tag">Nos services</p>
+    <h2 class="section-title">Nos services pour développer votre entreprise</h2>
+    <p class="section-sub">De la stratégie à l'exécution, nous couvrons tous vos besoins en marketing et communication, assumons la gestion de vos projets et mettons en place des collaborations pour développer vos business.</p>
+    <div class="services-grid">
+      <div class="serv-card aos">
+        <div class="serv-icon">📣</div>
+        <h3>Marketing &amp; Communication</h3>
+        <ul class="serv-items">
+          <li>Stratégie marketing</li>
+          <li>Communication digitale</li>
+          <li>Branding &amp; visibilité</li>
+        </ul>
+      </div>
+      <div class="serv-card aos">
+        <div class="serv-icon">📋</div>
+        <h3>Gestion de Projet</h3>
+        <ul class="serv-items">
+          <li>Planification</li>
+          <li>Suivi et coordination</li>
+          <li>Optimisation des ressources</li>
+        </ul>
+      </div>
+      <div class="serv-card aos">
+        <div class="serv-icon">🤝</div>
+        <h3>Développement d'Affaires &amp; Partenariats</h3>
+        <ul class="serv-items">
+          <li>Recherche d'opportunités</li>
+          <li>Mise en relation stratégique</li>
+          <li>Structuration des partenariats</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFRES -->
+<section id="offres">
+  <div class="section-inner">
+    <p class="section-tag">Nos offres</p>
+    <h2 class="section-title">Des packs adaptés à chaque étape de votre croissance</h2>
+    <p class="section-sub">Choisissez l'offre qui correspond à vos besoins actuels. Vous pourrez évoluer vers un pack supérieur au fur et à mesure de votre développement.</p>
+    <div class="offres-grid">
+
+      <div class="offre-card aos">
+        <p class="offre-label">Pack Starter</p>
+        <h3>Starter</h3>
+        <p class="offre-subtitle">Pour micro-entreprises et débutants</p>
+        <ul class="offre-features">
+          <li>Diagnostic marketing gratuit</li>
+          <li>Logo et identité visuelle simplifiée</li>
+          <li>Création de 2 supports de communication</li>
+          <li>Présence sur 1 réseau social</li>
+          <li>1 accompagnement mensuel</li>
+        </ul>
+        <p class="offre-price">À partir de <strong>25k à 50k FCFA/mois</strong></p>
+        <a href="#contact" class="offre-cta light">Découvrir le Pack Starter</a>
+      </div>
+
+      <div class="offre-card featured aos">
+        <span class="offre-badge">⭐ Recommandé</span>
+        <p class="offre-label">Pack Croissance</p>
+        <h3>Croissance</h3>
+        <p class="offre-subtitle">Pour TPME en développement</p>
+        <ul class="offre-features">
+          <li>Tout le Pack Starter inclus</li>
+          <li>Stratégie marketing complète</li>
+          <li>Gestion de 2-3 réseaux sociaux</li>
+          <li>Création de contenu régulier</li>
+          <li>Campagnes publicitaires ciblées</li>
+          <li>2 accompagnements mensuels</li>
+          <li>Gestion de projet</li>
+        </ul>
+        <p class="offre-price">À partir de <strong>60k à 90k FCFA/mois</strong></p>
+        <a href="#contact" class="offre-cta dark">Découvrir le Pack Croissance</a>
+      </div>
+
+      <div class="offre-card aos">
+        <p class="offre-label">Pack Impact</p>
+        <h3>Impact</h3>
+        <p class="offre-subtitle">Pour entreprises structurées</p>
+        <ul class="offre-features">
+          <li>Tout le Pack Croissance inclus</li>
+          <li>Stratégie marketing 360°</li>
+          <li>Site web professionnel</li>
+          <li>Campagnes multi-canaux</li>
+          <li>Analyse de performance avancée</li>
+          <li>4 accompagnements mensuels</li>
+        </ul>
+        <p class="offre-price">À partir de <strong>100 000 FCFA/mois</strong></p>
+        <a href="#contact" class="offre-cta light">Découvrir le Pack Impact</a>
+      </div>
+
+    </div>
+    <div class="offres-note">
+      <strong>🔄 Flexibilité garantie :</strong> Toutes nos offres sont modulables selon votre budget et vos priorités. Nous construisons ensemble la solution qui vous convient.
+    </div>
+    <div style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;flex-wrap:wrap">
+      <a href="#contact" class="btn-primary">Demander un Diagnostic Gratuit</a>
+      <a href="#services" class="btn-secondary" style="background:transparent;color:var(--dark);border:2px solid var(--border);padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:600;">Voir nos Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section id="processus">
+  <div class="section-inner">
+    <p class="section-tag">Comment ça marche ?</p>
+    <h2 class="section-title">Un processus simple en 4 étapes</h2>
+    <div class="steps-grid">
+      <div class="step-card aos">
+        <div class="step-num">1</div>
+        <h3>Diagnostic gratuit</h3>
+        <p>Nous analysons votre situation actuelle, vos objectifs et vos contraintes lors d'un premier rendez-vous sans engagement.</p>
+      </div>
+      <div class="step-card aos">
+        <div class="step-num">2</div>
+        <h3>Proposition personnalisée</h3>
+        <p>Nous vous présentons une stratégie sur mesure avec un plan d'action détaillé et un budget adapté à vos moyens.</p>
+      </div>
+      <div class="step-card aos">
+        <div class="step-num">3</div>
+        <h3>Mise en œuvre</h3>
+        <p>Notre équipe déploie les actions convenues : création de supports, campagnes, contenus et tous les outils nécessaires.</p>
+      </div>
+      <div class="step-card aos">
+        <div class="step-num">4</div>
+        <h3>Suivi &amp; évolution</h3>
+        <p>Nous mesurons les résultats, ajustons la stratégie et faisons évoluer votre pack selon votre croissance.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap">
+      <a href="#offres" class="btn-primary">Voir nos offres</a>
+      <a href="#contact" class="btn-secondary" style="background:transparent;color:var(--dark);border:2px solid var(--border);padding:.85rem 2rem;border-radius:50px;text-decoration:none;font-weight:600;">Commencer mon diagnostic gratuit</a>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSULTATS -->
+<section id="resultats">
+  <div class="section-inner">
+    <div class="resultats-inner">
+      <div>
+        <p class="section-tag" style="color:var(--accent2)">Des résultats mesurables</p>
+        <h2 class="section-title">Des résultats mesurables pour votre entreprise</h2>
+        <p class="section-sub">MiLaZé+ s'engage à générer un impact concret pour les TPME togolaises et à contribuer au développement économique local. Notre approche combine professionnalisme, accessibilité et accompagnement de proximité.</p>
+        <div class="stats-trio">
+          <div class="stat-block aos">
+            <div class="stat-big">100+</div>
+            <div class="stat-desc">TPME accompagnées — Notre objectif la première année</div>
+          </div>
+          <div class="stat-block aos">
+            <div class="stat-big">3x</div>
+            <div class="stat-desc">Visibilité multipliée — Augmentation moyenne constatée</div>
+          </div>
+          <div class="stat-block aos">
+            <div class="stat-big">50+</div>
+            <div class="stat-desc">Emplois indirects — Créés grâce à la croissance des clients</div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <a href="#offres" class="btn-primary">Découvrir nos offres</a>
+        </div>
+      </div>
+      <div class="resultats-img">
+        <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/70687e4d2e6e4836af7c2eb91eeb9a2a/original/125.jpg" alt="Impact MiLaZé+">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI -->
+<section id="pourquoi">
+  <div class="section-inner">
+    <p class="section-tag">Pourquoi choisir MiLaZé+ ?</p>
+    <h2 class="section-title">4 raisons qui font la différence</h2>
+    <div class="pourquoi-grid">
+      <div class="pourquoi-card aos">
+        <div class="pq-num">1</div>
+        <div>
+          <h3>Accessibilité</h3>
+          <p>Des tarifs pensés pour les budgets des TPME, avec des options de paiement flexibles et progressives selon vos capacités.</p>
+        </div>
+      </div>
+      <div class="pourquoi-card aos">
+        <div class="pq-num">2</div>
+        <div>
+          <h3>Simplicité</h3>
+          <p>Un processus clair, sans jargon technique, et un accompagnement humain qui vous guide à chaque étape du développement.</p>
+        </div>
+      </div>
+      <div class="pourquoi-card aos">
+        <div class="pq-num">3</div>
+        <div>
+          <h3>Impact réel</h3>
+          <p>Des résultats concrets et mesurables : plus de clients, meilleure visibilité, et croissance durable de votre activité.</p>
+        </div>
+      </div>
+      <div class="pourquoi-card aos">
+        <div class="pq-num">4</div>
+        <div>
+          <h3>Évolution continue</h3>
+          <p>Nos solutions grandissent avec vous, s'adaptant à vos nouveaux besoins et ambitions au fil de votre parcours entrepreneurial.</p>
+        </div>
+      </div>
+    </div>
+    <div class="quote-block">
+      <blockquote>« Nous croyons que chaque entreprise togolaise, quelle que soit sa taille, mérite d'avoir accès à un marketing professionnel. C'est notre mission de rendre cela possible. »</blockquote>
+      <div class="quote-btns">
+        <a href="#contact" class="btn-primary">Obtenez votre diagnostic gratuit</a>
+        <a href="#contact" class="btn-secondary" style="border-color:rgba(255,255,255,.4)">Contactez nous</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTENAIRES -->
+<section id="partenaires">
+  <div class="section-inner">
+    <p class="section-tag">Nos partenaires</p>
+    <h2 class="section-title">Ensemble pour dynamiser l'entrepreneuriat togolais</h2>
+    <p class="section-sub">MiLaZé+ collabore avec des acteurs clés de l'écosystème entrepreneurial pour maximiser son impact. Partenaires techniques, incubateurs, bailleurs et institutions nous font confiance.</p>
+    <div class="partners-strip">
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/xWnugc2C5Io5HedzWsOiW.png" alt="Partenaire 1"></div>
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/eYY1jQRLdwl4zW8gfEXI7.png" alt="Partenaire 2"></div>
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/W2cxY5XxGgX464OZgq5mk.png" alt="Partenaire 3"></div>
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/c3FVtZLl0gHWdukj8pgJQ.png" alt="Partenaire 4"></div>
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/4cPPUl9MsqsqY0Vi9wDWw.png" alt="Partenaire 5"></div>
+      <div class="partner-logo"><img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/RMCWXxYsQirZEgKqzBlTJ.png" alt="Partenaire 6"></div>
+    </div>
+    <div class="partner-cta">
+      <p><strong>Vous êtes un partenaire potentiel ?</strong> Discutons de la manière dont nous pouvons collaborer pour soutenir les TPME togolaises.</p>
+      <a href="#contact" class="btn-primary">Devenir partenaire</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div>
+        <div class="contact-logo">
+          <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/1ac199dd05d843c5a32a86f8e55eb18e/original/3-removebg-preview.png" alt="Logo MiLaZé+">
+        </div>
+        <p class="section-tag" style="color:var(--accent2)">Parlons de vos projets !!!</p>
+        <h2 class="section-title" style="color:#fff">Contactez-nous dès aujourd'hui</h2>
+        <p style="color:rgba(255,255,255,.7);margin:1rem 0 .5rem;line-height:1.7;">Bénéficiez d'un diagnostic marketing gratuit et découvrez comment MiLaZé+ peut propulser votre entreprise.</p>
+        <ul class="contact-info-list">
+          <li><span class="icon">✅</span> Réponse sous 48h</li>
+          <li><span class="icon">✅</span> Premier rendez-vous sans engagement</li>
+          <li><span class="icon">✅</span> Devis personnalisé adapté à votre budget</li>
+        </ul>
+        <div class="contact-btns">
+          <a href="#" class="btn-diagnostic">📋 Demander mon diagnostic gratuit</a>
+          <a href="https://wa.me/22891610599" target="_blank" class="btn-whatsapp">💬 Nous contacter par WhatsApp</a>
+        </div>
+        <div class="contact-contact-info">
+          <p><strong style="color:rgba(255,255,255,.85)">Email :</strong> <a href="mailto:milazeplus@gmail.com">milazeplus@gmail.com</a></p>
+          <p><strong style="color:rgba(255,255,255,.85)">Téléphone :</strong> <a href="tel:+22891610599">+228 91 61 05 99</a></p>
+        </div>
+      </div>
+      <div>
+        <div class="contact-img-grid">
+          <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/7fOQGujCKCDQBLKe5k1l-.png" alt="">
+          <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/MOvcENpGCA_YX0CDJ1QkH.png" alt="">
+          <img src="https://cdn.gamma.app/1htw4gu1tvsbi5o/generated-images/pZtgyvYaGn0A3qHn1Ztjg.png" alt="" style="grid-column:span 2;height:200px;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong>MiLaZé+ :</strong> Le marketing, la communication, la gestion de projet et le développement d'affaires pour les TPME togolaises en agriculture et agro-industrie ; commerce et services (tertiaire) ; industrie et transformation.
+  </p>
+  <p style="margin-top:.5rem">© 2025 MiLaZé+. Tous droits réservés.</p>
+</footer>
+
+<script>
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // AOS
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.aos').forEach(el => observer.observe(el));
+
+  // Animate stat bars when in view
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.stat-fill').forEach(fill => {
+          fill.style.width = fill.getAttribute('data-w');
+        });
+        barObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: .3 });
+  const defiEl = document.getElementById('defi');
+  if (defiEl) barObserver.observe(defiEl);
+
+  // Smooth nav active
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let pos = window.scrollY + 100;
+    sections.forEach(s => {
+      if (pos >= s.offsetTop && pos < s.offsetTop + s.offsetHeight) {
+        document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '');
+        const link = document.querySelector(`.nav-links a[href="#${s.id}"]`);
+        if (link) link.style.color = 'var(--accent)';
+      }
+    });
+  });
+</script>
+</body>
+</html>
