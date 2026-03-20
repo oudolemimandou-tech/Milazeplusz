@@ -410,7 +410,14 @@ footer{background:#050d07;color:rgba(255,255,255,.4);padding:2rem 5%}
   color: rgba(255,255,255,0.45); /* placeholder grisé */
 }
 
+.svg--{
 
+  margin-left: 45px;
+  margin-top: -28px;
+  display: flex;
+  margin-bottom: 14px;
+  
+}
 
 
 
