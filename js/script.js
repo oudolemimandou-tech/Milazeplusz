@@ -37,7 +37,7 @@ document.getElementById('cform').addEventListener('submit', async function(e) {
   const data = new FormData(form);
 
   try {
-    const response = await fetch('https://formspree.io/f/mzdjonnn', {
+    const response = await fetch('https://formspree.io/f/xjgadyng', {
       method: 'POST',
       body: data,
       headers: {
